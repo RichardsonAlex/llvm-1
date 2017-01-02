@@ -381,8 +381,8 @@ uint64_t ELFObjectFile<ELFT>::getSymbolValueImpl(DataRefImpl Symb) const {
 
   const Elf_Ehdr *Header = EF.getHeader();
   // Clear the ARM/Thumb or microMIPS indicator flag.
-  if ((Header->e_machine == ELF::EM_ARM || Header->e_machine == ELF::EM_MIPS) &&
-      ESym->getType() == ELF::STT_FUNC)
+  if ((Header->e_machine == ELF::EM_ARM || Header->e_machine == ELF::EM_MIPS ||
+      Header->e_machine == ELF::EM_MIPS_CHERI) && ESym->getType() == ELF::STT_FUNC)
     Ret &= ~1;
 
   return Ret;
@@ -859,6 +859,8 @@ StringRef ELFObjectFile<ELFT>::getFileFormatName() const {
       return "ELF64-sparc";
     case ELF::EM_MIPS:
       return "ELF64-mips";
+    case ELF::EM_MIPS_CHERI:
+      return "ELF64-mips-cheri";
     default:
       return "ELF64-unknown";
     }
@@ -885,7 +887,6 @@ unsigned ELFObjectFile<ELFT>::getArch() const {
   case ELF::EM_HEXAGON:
     return Triple::hexagon;
   case ELF::EM_MIPS:
-  case ELF::EM_CHERI256:
     switch (EF.getHeader()->e_ident[ELF::EI_CLASS]) {
     case ELF::ELFCLASS32:
       return IsLittleEndian ? Triple::mipsel : Triple::mips;
@@ -894,6 +895,12 @@ unsigned ELFObjectFile<ELFT>::getArch() const {
     default:
       report_fatal_error("Invalid ELFCLASS!");
     }
+  case ELF::EM_MIPS_CHERI:
+    if (IsLittleEndian)
+      report_fatal_error("EM_MIPS_CHERI must be big endian!");
+    if (EF.getHeader()->e_ident[ELF::EI_CLASS] != ELF::ELFCLASS64)
+      report_fatal_error("EM_MIPS_CHERI must be ELFCLASS64!");
+     return Triple::cheri;
   case ELF::EM_PPC:
     return Triple::ppc;
   case ELF::EM_PPC64:

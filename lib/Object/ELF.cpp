@@ -33,6 +33,7 @@ StringRef getELFRelocationTypeName(uint32_t Machine, uint32_t Type) {
     }
     break;
   case ELF::EM_MIPS:
+  case ELF::EM_MIPS_CHERI:
     switch (Type) {
 #include "llvm/Support/ELFRelocs/Mips.def"
     default:

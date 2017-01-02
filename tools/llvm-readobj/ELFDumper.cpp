@@ -568,6 +568,7 @@ static const EnumEntry<unsigned> ElfMachineType[] = {
   LLVM_READOBJ_ENUM_ENT(ELF, EM_IAMCU        ),
   LLVM_READOBJ_ENUM_ENT(ELF, EM_860          ),
   LLVM_READOBJ_ENUM_ENT(ELF, EM_MIPS         ),
+  LLVM_READOBJ_ENUM_ENT(ELF, EM_MIPS_CHERI   ),
   LLVM_READOBJ_ENUM_ENT(ELF, EM_S370         ),
   LLVM_READOBJ_ENUM_ENT(ELF, EM_MIPS_RS3_LE  ),
   LLVM_READOBJ_ENUM_ENT(ELF, EM_PARISC       ),
@@ -756,6 +757,7 @@ static const char *getElfSectionType(unsigned Arch, unsigned Type) {
   case ELF::EM_X86_64:
     switch (Type) { LLVM_READOBJ_ENUM_CASE(ELF, SHT_X86_64_UNWIND); }
   case ELF::EM_MIPS:
+  case ELF::EM_MIPS_CHERI:
   case ELF::EM_MIPS_RS3_LE:
     switch (Type) {
     LLVM_READOBJ_ENUM_CASE(ELF, SHT_MIPS_REGINFO);
@@ -828,6 +830,7 @@ static const char *getElfSegmentType(unsigned Arch, unsigned Type) {
     LLVM_READOBJ_ENUM_CASE(ELF, PT_ARM_EXIDX);
     }
   case ELF::EM_MIPS:
+  case ELF::EM_MIPS_CHERI:
   case ELF::EM_MIPS_RS3_LE:
     switch (Type) {
     LLVM_READOBJ_ENUM_CASE(ELF, PT_MIPS_REGINFO);
@@ -1070,7 +1073,7 @@ void ELFDumper<ELFT>::printFileHeaders() {
     W.printHex   ("Entry", Header->e_entry);
     W.printHex   ("ProgramHeaderOffset", Header->e_phoff);
     W.printHex   ("SectionHeaderOffset", Header->e_shoff);
-    if (Header->e_machine == EM_MIPS)
+    if (Header->e_machine == EM_MIPS || Header->e_machine == EM_MIPS_CHERI)
       W.printFlags("Flags", Header->e_flags, makeArrayRef(ElfHeaderMipsFlags),
                    unsigned(ELF::EF_MIPS_ARCH), unsigned(ELF::EF_MIPS_ABI),
                    unsigned(ELF::EF_MIPS_MACH));
@@ -2004,7 +2007,7 @@ void MipsGOTParser<ELFT>::printPLTEntry(uint64_t PLTAddr,
 }
 
 template <class ELFT> void ELFDumper<ELFT>::printMipsPLTGOT() {
-  if (Obj->getHeader()->e_machine != EM_MIPS) {
+  if (Obj->getHeader()->e_machine != EM_MIPS && Obj->getHeader()->e_machine != EM_MIPS_CHERI) {
     W.startLine() << "MIPS PLT GOT is available for MIPS targets only.\n";
     return;
   }

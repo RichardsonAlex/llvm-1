@@ -47,6 +47,7 @@ ScalarEnumerationTraits<ELFYAML::ELF_EM>::enumeration(IO &IO,
   ECase(EM_IAMCU)
   ECase(EM_860)
   ECase(EM_MIPS)
+  ECase(EM_MIPS_CHERI)
   ECase(EM_S370)
   ECase(EM_MIPS_RS3_LE)
   ECase(EM_PARISC)
@@ -263,6 +264,7 @@ void ScalarBitSetTraits<ELFYAML::ELF_EF>::bitset(IO &IO,
     BCaseMask(EF_ARM_EABI_VER5, EF_ARM_EABIMASK)
     break;
   case ELF::EM_MIPS:
+  case ELF::EM_MIPS_CHERI:
     BCase(EF_MIPS_NOREORDER)
     BCase(EF_MIPS_PIC)
     BCase(EF_MIPS_CPIC)
@@ -389,6 +391,7 @@ void ScalarEnumerationTraits<ELFYAML::ELF_SHT>::enumeration(
     ECase(SHT_X86_64_UNWIND)
     break;
   case ELF::EM_MIPS:
+  case ELF::EM_MIPS_CHERI:
     ECase(SHT_MIPS_REGINFO)
     ECase(SHT_MIPS_OPTIONS)
     ECase(SHT_MIPS_ABIFLAGS)
@@ -448,6 +451,7 @@ void ScalarBitSetTraits<ELFYAML::ELF_STO>::bitset(IO &IO,
 #define BCase(X) IO.bitSetCase(Value, #X, ELF::X);
   switch (Object->Header.Machine) {
   case ELF::EM_MIPS:
+  case ELF::EM_MIPS_CHERI:
     BCase(STO_MIPS_OPTIONAL)
     BCase(STO_MIPS_PLT)
     BCase(STO_MIPS_PIC)
@@ -480,6 +484,7 @@ void ScalarEnumerationTraits<ELFYAML::ELF_REL>::enumeration(
 #include "llvm/Support/ELFRelocs/x86_64.def"
     break;
   case ELF::EM_MIPS:
+  case ELF::EM_MIPS_CHERI:
 #include "llvm/Support/ELFRelocs/Mips.def"
     break;
   case ELF::EM_HEXAGON:
@@ -763,7 +768,8 @@ void MappingTraits<ELFYAML::Relocation>::mapping(IO &IO,
   IO.mapRequired("Offset", Rel.Offset);
   IO.mapRequired("Symbol", Rel.Symbol);
 
-  if (Object->Header.Machine == ELFYAML::ELF_EM(ELF::EM_MIPS) &&
+  if ((Object->Header.Machine == ELFYAML::ELF_EM(ELF::EM_MIPS) ||
+      Object->Header.Machine == ELFYAML::ELF_EM(ELF::EM_MIPS_CHERI)) &&
       Object->Header.Class == ELFYAML::ELF_ELFCLASS(ELF::ELFCLASS64)) {
     MappingNormalization<NormalizedMips64RelType, ELFYAML::ELF_REL> Key(
         IO, Rel.Type);

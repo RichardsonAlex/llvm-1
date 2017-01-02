@@ -310,7 +310,7 @@ enum {
   EM_NORC          = 218, // Nanoradio Optimized RISC
   EM_CSR_KALIMBA   = 219, // CSR Kalimba architecture family
   EM_AMDGPU        = 224, // AMD GPU architecture
-  EM_CHERI256      = 0xC256 // 256-bit CHERI
+  EM_MIPS_CHERI    = 0xC256 // 256-bit CHERI
 };
 
 // Object file classes.
