@@ -83,6 +83,7 @@ int main(int argc, char *argv[]) {
             (std::get<0>(Sec) + std::get<1>(Sec)) > base) {
           Size = std::get<1>(Sec);
           isFunction = std::get<2>(Sec);
+#if 0
           if (!isFunction)
             fprintf(stderr, "Unable to find size of symbol at 0%llx for pointer at 0x%llx\n"
                     "Using section size (%llu bytes) instead\n",
@@ -90,14 +91,17 @@ int main(int argc, char *argv[]) {
                     static_cast<unsigned long long>(
                         support::endian::read<uint64_t, support::big, 1>(entry)),
                     static_cast<unsigned long long>(Size));
+#endif
           break; // First match wins
         }
       }
       if (Size == 0) {
+#if 0
         fprintf(stderr, "Unable to find size of symbol at 0%llx for pointer at 0x%llx\n",
                 (unsigned long long)base,
                 static_cast<unsigned long long>(
                     support::endian::read<uint64_t, support::big, 1>(entry)));
+#endif
         continue;
       }
     } else {
