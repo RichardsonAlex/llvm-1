@@ -1006,6 +1006,15 @@ DecodeStatus MipsDisassembler::getInstruction(MCInst &Instr, uint64_t &Size,
     return Result;
   }
 
+  // Try this as a CHERI instruction (needed for llvm-objdump called on static
+  // libraries as the individual objects are EM_MIPS and not EM_MIPS_CHERI)
+  Result = decodeInstruction(DecoderTableCHERI32, Instr, Insn, Address,
+                             this, STI);
+  if (Result != MCDisassembler::Fail) {
+    Size = 4;
+    return Result;
+  }
+
   return MCDisassembler::Fail;
 }
 
