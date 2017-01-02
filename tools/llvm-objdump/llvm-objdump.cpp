@@ -1085,9 +1085,17 @@ static void DisassembleObject(const ObjectFile *Obj, bool InlineRelocs) {
           }
           outs() << "\n";
         } else {
-          errs() << ToolName << ": warning: invalid instruction encoding\n";
+          PIP.printInst(*IP, &Inst,
+              Bytes.slice(Index, Size),
+              SectionAddr + Index, outs(), "", *STI);
+          outs().changeColor(raw_ostream::RED) << "<invalid instruction>";
+          outs().resetColor() << CommentStream.str() << "\n";
           if (Size == 0)
             Size = 1; // skip illegible bytes
+          errs() << ToolName << ": warning: invalid instruction encoding ("
+            << Size << " bytes): ";
+          dumpBytes(Bytes.slice(Index, Size), errs());
+          errs() << "\n";
         }
 
         // Print relocation for instruction.
