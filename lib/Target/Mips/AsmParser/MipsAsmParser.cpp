@@ -3573,8 +3573,9 @@ int MipsAsmParser::matchCheriRegisterName(StringRef Name) {
     unsigned IntVal;
     if (NumString.getAsInteger(10, IntVal))
       return -1; // This is not an integer.
-    if (IntVal == 0)
-      Warning(Parser.getTok().getLoc(), "Direct access to c0 is deprecated.");
+    if (IntVal == 0) {
+      // Warning(Parser.getTok().getLoc(), "Direct access to c0 is deprecated.");
+    }
     if (IntVal > 31) // Maximum index for CHERI register.
       return -1;
     return IntVal;
@@ -3760,10 +3761,12 @@ const MCExpr *MipsAsmParser::evaluateRelocExpr(const MCExpr *Expr,
     // It's a constant, evaluate reloc value.
     int16_t Val;
     switch (getVariantKind(RelocStr)) {
+    case MCSymbolRefExpr::VK_Mips_PCREL_LO16:
     case MCSymbolRefExpr::VK_Mips_ABS_LO:
       // Get the 1st 16-bits.
       Val = MCE->getValue() & 0xffff;
       break;
+    case MCSymbolRefExpr::VK_Mips_PCREL_HI16:
     case MCSymbolRefExpr::VK_Mips_ABS_HI:
       // Get the 2nd 16-bits. Also add 1 if bit 15 is 1, to compensate for low
       // 16 bits being negative.
