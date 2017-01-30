@@ -487,6 +487,13 @@ MipsTargetELFStreamer::MipsTargetELFStreamer(MCStreamer &S,
   else
     EFlags |= ELF::EF_MIPS_ARCH_1;
 
+  // Machine
+  if (Features[Mips::FeatureCnMips])
+    EFlags |= ELF::EF_MIPS_MACH_OCTEON;
+  else if (Features[Mips::FeatureMipsCheri128])
+    EFlags |= ELF::EF_MIPS_MACH_CHERI128;
+  else if (Features[Mips::FeatureMipsCheri])
+    EFlags |= ELF::EF_MIPS_MACH_CHERI256;
   // Other options.
   if (Features[Mips::FeatureNaN2008])
     EFlags |= ELF::EF_MIPS_NAN2008;
@@ -549,6 +556,9 @@ void MipsTargetELFStreamer::finish() {
   // one as well.
   if (EFlags & ELF::EF_MIPS_CPIC && getABI().IsN64())
     EFlags |= ELF::EF_MIPS_PIC;
+
+  if (getABI().IsCheriSandbox())
+    EFlags |= ELF::EF_MIPS_ABI_CHERIABI;
 
   MCA.setELFHeaderEFlags(EFlags);
 
