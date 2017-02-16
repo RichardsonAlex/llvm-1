@@ -625,8 +625,7 @@ void MipsTargetELFStreamer::emitDirectiveEnd(StringRef Name) {
   MCContext &Context = MCA.getContext();
   MCStreamer &OS = getStreamer();
 
-  MCSectionELF *Sec = Context.getELFSection(".pdr", ELF::SHT_PROGBITS,
-                                            ELF::SHF_ALLOC | ELF::SHT_REL);
+  MCSectionELF *Sec = Context.getELFSection(".pdr", ELF::SHT_PROGBITS, 0);
 
   const MCSymbolRefExpr *ExprRef =
       MCSymbolRefExpr::create(Name, MCSymbolRefExpr::VK_None, Context);
