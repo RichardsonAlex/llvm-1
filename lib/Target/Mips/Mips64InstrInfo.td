@@ -688,6 +688,20 @@ def : MipsPat<(atomic_store_64 addr:$a, GPR64:$v), (SD GPR64:$v, addr:$a)>;
 //===----------------------------------------------------------------------===//
 // Instruction aliases
 //===----------------------------------------------------------------------===//
+
+multiclass OneOrTwoOperandMacroImmediateAlias<string Memnomic,
+                                         Instruction Opcode> {
+  def : MipsInstAlias<!strconcat(Memnomic, " $rs, $rt, $imm"),
+                                (Opcode GPR64Opnd:$rs,
+                                        GPR64Opnd:$rt,
+                                        imm64:$imm), 0>, GPR_64;
+  def : MipsInstAlias<!strconcat(Memnomic, " $rs, $imm"),
+                                (Opcode GPR64Opnd:$rs,
+                                        GPR64Opnd:$rs,
+                                        imm64:$imm), 0>, GPR_64;
+}
+
+
 let AdditionalPredicates = [NotInMicroMips] in {
   def : MipsInstAlias<"move $dst, $src",
                       (OR64 GPR64Opnd:$dst,  GPR64Opnd:$src, ZERO_64), 1>,
@@ -707,6 +721,19 @@ let AdditionalPredicates = [NotInMicroMips] in {
   def : MipsInstAlias<"daddu $rs, $imm",
                       (DADDiu GPR64Opnd:$rs, GPR64Opnd:$rs, simm16_64:$imm),
                       0>, ISA_MIPS3;
+  defm : OneOrTwoOperandMacroImmediateAlias<"add", ADDi>, ISA_MIPS1_NOT_32R6_64R6;
+
+  defm : OneOrTwoOperandMacroImmediateAlias<"addu", ADDiu>;
+
+  defm : OneOrTwoOperandMacroImmediateAlias<"and", ANDi>;
+
+  defm : OneOrTwoOperandMacroImmediateAlias<"or", ORi>;
+
+  defm : OneOrTwoOperandMacroImmediateAlias<"xor", XORi>;
+
+  defm : OneOrTwoOperandMacroImmediateAlias<"slt", SLTi>;
+
+  defm : OneOrTwoOperandMacroImmediateAlias<"sltu", SLTiu>;
 }
 def : MipsInstAlias<"dsll $rd, $rt, $rs",
                     (DSLLV GPR64Opnd:$rd, GPR64Opnd:$rt, GPR32Opnd:$rs), 0>,

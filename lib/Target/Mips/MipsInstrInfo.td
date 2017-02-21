@@ -2326,11 +2326,11 @@ multiclass OneOrTwoOperandMacroImmediateAlias<string Memnomic,
   def : MipsInstAlias<!strconcat(Memnomic, " $rs, $rt, $imm"),
                                 (Opcode GPR32Opnd:$rs,
                                         GPR32Opnd:$rt,
-                                        simm32_relaxed:$imm), 0>;
+                                        simm32_relaxed:$imm), 0>, GPR_32;
   def : MipsInstAlias<!strconcat(Memnomic, " $rs, $imm"),
                                 (Opcode GPR32Opnd:$rs,
                                         GPR32Opnd:$rs,
-                                        simm32_relaxed:$imm), 0>;
+                                        simm32_relaxed:$imm), 0>, GPR_32;
 }
 
 def : MipsInstAlias<"move $dst, $src",
