@@ -2273,6 +2273,7 @@ MipsAsmParser::tryExpandInstruction(MCInst &Inst, SMLoc IDLoc, MCStreamer &Out,
     }
     return MER_NotAMacro;
   case Mips::ANDi:
+  case Mips::ANDi64:
   case Mips::ORi:
   case Mips::XORi:
     if ((Inst.getNumOperands() == 3) && Inst.getOperand(0).isReg() &&
