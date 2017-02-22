@@ -2262,7 +2262,9 @@ MipsAsmParser::tryExpandInstruction(MCInst &Inst, SMLoc IDLoc, MCStreamer &Out,
   case Mips::ADDi:
   case Mips::ADDiu:
   case Mips::SLTi:
+  case Mips::SLTi64:
   case Mips::SLTiu:
+  case Mips::SLTiu64:
     if ((Inst.getNumOperands() == 3) && Inst.getOperand(0).isReg() &&
         Inst.getOperand(1).isReg() && Inst.getOperand(2).isImm()) {
       int64_t ImmValue = Inst.getOperand(2).getImm();
@@ -3685,9 +3687,11 @@ bool MipsAsmParser::expandAliasImmediate(MCInst &Inst, SMLoc IDLoc,
       FinalOpcode = Mips::OR;
       break;
     case (Mips::SLTi):
+    case (Mips::SLTi64):
       FinalOpcode = Mips::SLT;
       break;
     case (Mips::SLTiu):
+    case (Mips::SLTiu64):
       FinalOpcode = Mips::SLTu;
       break;
     case (Mips::XORi):

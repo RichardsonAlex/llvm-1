@@ -293,6 +293,8 @@ text_label:
 # CHECK-NEXT: or      $4, $4, $5              # encoding: [0x25,0x20,0x85,0x00]
 
 
+# FIXME slt is broken.....
+
   slt $4, $5, -0x80000000
 # CHECK:      lui     $4, 0x8000              # encoding: [0x00,0x80,0x04,0x3c]
 # CHECK-NEXT: slt     $4, $4, $5              # encoding: [0x2a,0x20,0x85,0x00]
@@ -310,7 +312,6 @@ text_label:
   slt $4, $5, 0x10000
 # CHECK-NEXT: lui     $4, 0x1                 # encoding: [0x01,0x00,0x04,0x3c]
 # CHECK-NEXT: slt     $4, $4, $5              # encoding: [0x2a,0x20,0x85,0x00]
-# TODO: SHOULD THIS BE SIGN EXTENDED OR NOT?
   slt $4, $5, 0xFFFFFFFF
 # CHECK-NEXT: slti    $4, $5, -0x1            # encoding: [0xff,0xff,0xa4,0x28]
 

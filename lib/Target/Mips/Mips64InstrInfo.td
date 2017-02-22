@@ -736,6 +736,12 @@ let AdditionalPredicates = [NotInMicroMips] in {
           (XORi64 GPR64Opnd:$rs, GPR64Opnd:$rt, imm64:$imm), 0>, GPR_64;
   def : MipsInstAlias<"xor $rs, $imm",
           (XORi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>, GPR_64;
+// FIXME: this is broken for some reason:
+//    error: result argument #0 does not match instruction operand class GPR32Opnd
+//   def : MipsInstAlias<"slt $rs, $imm",
+//           (SLTi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>, GPR_64;
+//   def : MipsInstAlias<"sltu $rs, $imm",
+//           (SLTiu64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>, GPR_64;
 }
 def : MipsInstAlias<"dsll $rd, $rt, $rs",
                     (DSLLV GPR64Opnd:$rd, GPR64Opnd:$rt, GPR32Opnd:$rs), 0>,
