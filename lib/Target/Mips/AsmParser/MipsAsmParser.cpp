@@ -3658,7 +3658,7 @@ bool MipsAsmParser::expandAliasImmediate(MCInst &Inst, SMLoc IDLoc,
     FinalDstReg = DstReg;
     DstReg = ATReg;
   }
-
+  printf("Attemptiong to load immediate %lx\n", ImmValue);
   if (!loadImmediate(ImmValue, DstReg, Mips::NoRegister, Is32Bit, false, Inst.getLoc(), Out, STI)) {
     switch (FinalOpcode) {
     default:
@@ -3670,12 +3670,14 @@ bool MipsAsmParser::expandAliasImmediate(MCInst &Inst, SMLoc IDLoc,
       FinalOpcode = Mips::ADDu;
       break;
     case (Mips::ANDi):
+    case (Mips::ANDi64):
       FinalOpcode = Mips::AND;
       break;
     case (Mips::NORImm):
       FinalOpcode = Mips::NOR;
       break;
     case (Mips::ORi):
+    case (Mips::ORi64):
       FinalOpcode = Mips::OR;
       break;
     case (Mips::SLTi):
@@ -3685,6 +3687,7 @@ bool MipsAsmParser::expandAliasImmediate(MCInst &Inst, SMLoc IDLoc,
       FinalOpcode = Mips::SLTu;
       break;
     case (Mips::XORi):
+    case (Mips::XORi64):
       FinalOpcode = Mips::XOR;
       break;
     }

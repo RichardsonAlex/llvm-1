@@ -725,17 +725,17 @@ let AdditionalPredicates = [NotInMicroMips] in {
                       (DADDiu GPR64Opnd:$rs, GPR64Opnd:$rs, simm16_64:$imm),
                       0>, ISA_MIPS3;
   def : MipsInstAlias<"and $rs, $rt, $imm",
-          (ANDi64 GPR64Opnd:$rs, GPR64Opnd:$rt, imm64:$imm), 0>;
+          (ANDi64 GPR64Opnd:$rs, GPR64Opnd:$rt, imm64:$imm), 0>, GPR_64;
   def : MipsInstAlias<"and $rs, $imm",
-          (ANDi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>;
+          (ANDi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>, GPR_64;
   def : MipsInstAlias<"or $rs, $rt, $imm",
-          (ORi64 GPR64Opnd:$rs, GPR64Opnd:$rt, imm64:$imm), 0>;
+          (ORi64 GPR64Opnd:$rs, GPR64Opnd:$rt, imm64:$imm), 0>, GPR_64;
   def : MipsInstAlias<"or $rs, $imm",
-          (ORi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>;
+          (ORi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>, GPR_64;
   def : MipsInstAlias<"xor $rs, $rt, $imm",
-          (XORi64 GPR64Opnd:$rs, GPR64Opnd:$rt, imm64:$imm), 0>;
+          (XORi64 GPR64Opnd:$rs, GPR64Opnd:$rt, imm64:$imm), 0>, GPR_64;
   def : MipsInstAlias<"xor $rs, $imm",
-          (XORi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>;
+          (XORi64 GPR64Opnd:$rs, GPR64Opnd:$rs, imm64:$imm), 0>, GPR_64;
 }
 def : MipsInstAlias<"dsll $rd, $rt, $rs",
                     (DSLLV GPR64Opnd:$rd, GPR64Opnd:$rt, GPR32Opnd:$rs), 0>,
