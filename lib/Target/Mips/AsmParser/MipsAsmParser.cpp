@@ -3501,6 +3501,7 @@ bool MipsAsmParser::expandUlh(MCInst &Inst, bool Signed, SMLoc IDLoc,
 
   bool IsLargeOffset = !(isInt<16>(OffsetValue + 1) && isInt<16>(OffsetValue));
   if (IsLargeOffset) {
+	      // FIXME: will this load 32-bit immediates on cheri?
     if (loadImmediate(OffsetValue, ATReg, SrcReg, !ABI.ArePtrs64bit(), true,
                       IDLoc, Out, STI))
       return true;
@@ -3661,7 +3662,7 @@ bool MipsAsmParser::expandAliasImmediate(MCInst &Inst, SMLoc IDLoc,
     FinalDstReg = DstReg;
     DstReg = ATReg;
   }
-  printf("Attemptiong to load immediate %lx\n", ImmValue);
+  fprintf(stderr, "Attempting to load immediate %lx\n", ImmValue);
   if (!loadImmediate(ImmValue, DstReg, Mips::NoRegister, Is32Bit, false, Inst.getLoc(), Out, STI)) {
     switch (FinalOpcode) {
     default:
