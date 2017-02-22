@@ -2507,7 +2507,7 @@ bool MipsAsmParser::loadImmediate(int64_t ImmValue, unsigned DstReg,
 
     uint16_t Bits31To16 = (ImmValue >> 16) & 0xffff;
     uint16_t Bits15To0 = ImmValue & 0xffff;
-
+    errs() << Is32BitImm << "isint32" << isInt<32>(ImmValue) << ImmValue << "\n";
     if (!Is32BitImm && !isInt<32>(ImmValue)) {
       // Traditional behaviour seems to special case this particular value. It's
       // not clear why other masks are handled differently.
@@ -2616,6 +2616,7 @@ bool MipsAsmParser::expandLoadAddress(unsigned DstReg, unsigned BaseReg,
                                       MCStreamer &Out,
                                       const MCSubtargetInfo *STI) {
   // la can't produce a usable address when addresses are 64-bit.
+  // FIXME: will this load 32-bit immediates on cheri?
   if (Is32BitAddress && ABI.ArePtrs64bit()) {
     // FIXME: Demote this to a warning and continue as if we had 'dla' instead.
     //        We currently can't do this because we depend on the equality
@@ -3550,6 +3551,7 @@ bool MipsAsmParser::expandUsh(MCInst &Inst, SMLoc IDLoc, MCStreamer &Out,
 
   bool IsLargeOffset = !(isInt<16>(OffsetValue + 1) && isInt<16>(OffsetValue));
   if (IsLargeOffset) {
+    // FIXME: will this load 32-bit immediates on cheri?
     if (loadImmediate(OffsetValue, ATReg, SrcReg, !ABI.ArePtrs64bit(), true,
                       IDLoc, Out, STI))
       return true;
@@ -3612,6 +3614,7 @@ bool MipsAsmParser::expandUxw(MCInst &Inst, SMLoc IDLoc, MCStreamer &Out,
   }
 
   if (IsLargeOffset) {
+// FIXME: will this load 32-bit immediates on cheri?
     if (loadImmediate(OffsetValue, TmpReg, SrcReg, !ABI.ArePtrs64bit(), true,
                       IDLoc, Out, STI))
       return true;
@@ -3647,7 +3650,7 @@ bool MipsAsmParser::expandAliasImmediate(MCInst &Inst, SMLoc IDLoc,
   unsigned SrcReg = Inst.getOperand(1).getReg();
   int64_t ImmValue = Inst.getOperand(2).getImm();
 
-  bool Is32Bit = isInt<32>(ImmValue) || isUInt<32>(ImmValue);
+  bool Is32Bit = isInt<32>(ImmValue) || (!isGP64bit() && isUInt<32>(ImmValue));
 
   unsigned FinalOpcode = Inst.getOpcode();
 
