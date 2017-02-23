@@ -2301,11 +2301,11 @@ def : MipsInstAlias<"seq $rd, $rs",
 
 def SEQIMacro : MipsAsmPseudoInst<(outs GPR32Opnd:$rd),
                                   (ins GPR32Opnd:$rs, simm32_relaxed:$imm),
-                                  "seq $rd, $rs, $imm">, NOT_ASE_CNMIPS;
+                                  "seq $rd, $rs, $imm">, NOT_ASE_CNMIPS, GPR_32;
 
 def : MipsInstAlias<"seq $rd, $imm",
                     (SEQIMacro GPR32Opnd:$rd, GPR32Opnd:$rd, simm32:$imm), 0>,
-                    NOT_ASE_CNMIPS;
+                    NOT_ASE_CNMIPS, GPR_32;
 //===----------------------------------------------------------------------===//
 // Instruction aliases
 //===----------------------------------------------------------------------===//
@@ -2369,10 +2369,10 @@ let AdditionalPredicates = [NotInMicroMips] in {
           (SLTu GPR32Opnd:$rs, GPR32Opnd:$rt, GPR32Opnd:$rs), 0>;
   def : MipsInstAlias<
           "slt $rs, $rt, $imm",
-          (SLTi GPR32Opnd:$rs, GPR32Opnd:$rt, simm32_relaxed:$imm), 0>;
+          (SLTi GPR32Opnd:$rs, GPR32Opnd:$rt, simm32_relaxed:$imm), 0>, GPR_32;
   def : MipsInstAlias<
           "sltu $rt, $rs, $imm",
-          (SLTiu GPR32Opnd:$rt, GPR32Opnd:$rs, simm32_relaxed:$imm), 0>;
+          (SLTiu GPR32Opnd:$rt, GPR32Opnd:$rs, simm32_relaxed:$imm), 0>, GPR_32;
   def : MipsInstAlias<
           "and $rs, $rt, $imm",
           (ANDi GPR32Opnd:$rs, GPR32Opnd:$rt, simm32_relaxed:$imm), 0>, GPR_32;
@@ -2499,7 +2499,7 @@ def JalOneReg : MipsAsmPseudoInst<(outs), (ins GPR32Opnd:$rs),
 
 def NORImm : MipsAsmPseudoInst<
                  (outs), (ins GPR32Opnd:$rs, GPR32Opnd:$rt, simm32:$imm),
-                 "nor\t$rs, $rt, $imm"> ;
+                 "nor\t$rs, $rt, $imm">, GPR_32;
 
 let hasDelaySlot = 1, isCTI = 1 in {
 def BneImm : MipsAsmPseudoInst<(outs GPR32Opnd:$rt),
