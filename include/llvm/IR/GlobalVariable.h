@@ -52,14 +52,18 @@ public:
   /// automatically inserted into the end of the specified modules global list.
   GlobalVariable(Type *Ty, bool isConstant, LinkageTypes Linkage,
                  Constant *Initializer = nullptr, const Twine &Name = "",
-                 ThreadLocalMode = NotThreadLocal, unsigned AddressSpace = 0,
+                 ThreadLocalMode = NotThreadLocal,
+                 // LLVM_DEFAULT_AS_PARAM(AddressSpace),
+                 unsigned AddressSpace = 0,
                  bool isExternallyInitialized = false);
   /// GlobalVariable ctor - This creates a global and inserts it before the
   /// specified other global.
   GlobalVariable(Module &M, Type *Ty, bool isConstant,
                  LinkageTypes Linkage, Constant *Initializer,
                  const Twine &Name = "", GlobalVariable *InsertBefore = nullptr,
-                 ThreadLocalMode = NotThreadLocal, unsigned AddressSpace = 0,
+                 ThreadLocalMode = NotThreadLocal,
+                 // LLVM_DEFAULT_AS_PARAM(AddressSpace),
+                 unsigned AddressSpace = 0,
                  bool isExternallyInitialized = false);
   GlobalVariable(const GlobalVariable &) = delete;
   GlobalVariable &operator=(const GlobalVariable &) = delete;

@@ -277,6 +277,7 @@ public:
   /// variable will be marked mergable with any others of the same contents.  If
   /// Name is specified, it is the name of the global variable created.
   GlobalVariable *CreateGlobalString(StringRef Str, const Twine &Name = "",
+                                     // LLVM_DEFAULT_AS_PARAM(AddressSpace)
                                      unsigned AddressSpace = 0);
 
   /// \brief Get a constant value representing either true or false.
@@ -383,12 +384,13 @@ public:
   }
 
   /// \brief Fetch the type representing a pointer to an 8-bit integer value.
-  PointerType *getInt8PtrTy(unsigned AddrSpace = 0) {
+  PointerType *getInt8PtrTy(LLVM_DEFAULT_AS_PARAM(AddrSpace)) {
     return Type::getInt8PtrTy(Context, AddrSpace);
   }
 
   /// \brief Fetch the type representing a pointer to an integer value.
-  IntegerType *getIntPtrTy(const DataLayout &DL, unsigned AddrSpace = 0) {
+  IntegerType *getIntPtrTy(const DataLayout &DL,
+                           LLVM_DEFAULT_AS_PARAM(AddrSpace)) {
     return DL.getIntPtrType(Context, AddrSpace);
   }
 
@@ -1303,6 +1305,7 @@ public:
   /// \brief Same as CreateGlobalString, but return a pointer with "i8*" type
   /// instead of a pointer to array of i8.
   Value *CreateGlobalStringPtr(StringRef Str, const Twine &Name = "",
+                               // LLVM_DEFAULT_AS_PARAM(AddressSpace)) {
                                unsigned AddressSpace = 0) {
     GlobalVariable *gv = CreateGlobalString(Str, Name, AddressSpace);
     Value *zero = ConstantInt::get(Type::getInt32Ty(Context), 0);
