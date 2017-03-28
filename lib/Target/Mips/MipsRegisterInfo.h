@@ -21,6 +21,8 @@
 #include "MipsGenRegisterInfo.inc"
 
 namespace llvm {
+class MipsSubtarget;
+
 class MipsRegisterInfo : public MipsGenRegisterInfo {
 public:
   enum class MipsPtrClass {
@@ -35,7 +37,7 @@ public:
     GlobalPointer = 3,
   };
 
-  MipsRegisterInfo();
+  MipsRegisterInfo(const MipsSubtarget &STI);
 
   /// Get PIC indirect call register
   static unsigned getPICCallReg();

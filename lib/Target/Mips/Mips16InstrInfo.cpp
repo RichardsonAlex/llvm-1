@@ -30,7 +30,7 @@ using namespace llvm;
 #define DEBUG_TYPE "mips16-instrinfo"
 
 Mips16InstrInfo::Mips16InstrInfo(const MipsSubtarget &STI)
-    : MipsInstrInfo(STI, Mips::Bimm16), RI() {}
+    : MipsInstrInfo(STI, Mips::Bimm16), RI(STI) {}
 
 const MipsRegisterInfo &Mips16InstrInfo::getRegisterInfo() const {
   return RI;

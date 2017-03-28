@@ -52,7 +52,8 @@ Cheri8("cheri8", cl::NotHidden,
 #define GET_REGINFO_TARGET_DESC
 #include "MipsGenRegisterInfo.inc"
 
-MipsRegisterInfo::MipsRegisterInfo() : MipsGenRegisterInfo(Mips::RA) {}
+MipsRegisterInfo::MipsRegisterInfo(const MipsSubtarget &STI)
+  : MipsGenRegisterInfo(STI.isABI_CheriSandbox() ? Mips::C17 : Mips::RA) {}
 
 unsigned MipsRegisterInfo::getPICCallReg() { return Mips::T9; }
 
