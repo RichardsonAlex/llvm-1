@@ -115,6 +115,7 @@ struct CheriAddressingModeFolder : public MachineFunctionPass {
       case Mips::CAPLOAD64: return Mips::LD;
       case Mips::CAPSTORE8: return Mips::SB64;
       case Mips::CAPSTORE16: return Mips::SH64;
+      // XXXAR: for test/CodeGen/Mips/cheri-global-bounds.ll this should be SW not SW64
       case Mips::CAPSTORE32: return Mips::SW64;
       case Mips::CAPSTORE64: return Mips::SD;
     }

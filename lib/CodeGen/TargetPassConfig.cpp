@@ -90,7 +90,7 @@ static cl::opt<bool> PrintGCInfo("print-gc", cl::Hidden,
     cl::desc("Dump garbage collector data"));
 static cl::opt<bool> VerifyMachineCode("verify-machineinstrs", cl::Hidden,
     cl::desc("Verify generated machine code"),
-    cl::init(false),
+    cl::init(true),
     cl::ZeroOrMore);
 static cl::opt<bool> EnableMachineOutliner("enable-machine-outliner",
     cl::Hidden,
