@@ -861,8 +861,8 @@ define hidden i8 addrspace(200)* @_ZN7WebCore67jsInternalSettingsGeneratedProtot
 ; CHECK-NEXT:    nop
 ; CHECK-NEXT:  .LBB0_6: # %for.body.i.i.i.preheader
 ; CHECK-NEXT:    clcbi $c3, %captab20(_ZN7WebCore27JSInternalSettingsGenerated6s_infoE)($c20)
-; CHECK-NEXT:    cincoffset $c4, $c24, 32
-; CHECK-NEXT:    csetbounds $c19, $c4, 16
+; CHECK-NEXT:    cincoffset $c19, $c24, 32
+; CHECK-NEXT:    csetbounds $c19, $c19, 16
 ; CHECK-NEXT:  .LBB0_7: # %for.body.i.i.i
 ; CHECK-NEXT:    # =>This Inner Loop Header: Depth=1
 ; CHECK-NEXT:    ceq $1, $c2, $c3
@@ -965,8 +965,8 @@ define hidden i8 addrspace(200)* @_ZN7WebCore67jsInternalSettingsGeneratedProtot
 ; CHECK-NEXT:    clc $c2, $zero, 224($c3)
 ; CHECK-NEXT:    dsll $1, $1, 4
 ; CHECK-NEXT:    clc $c2, $1, 0($c2)
-; CHECK-NEXT:    clc $c1, $zero, 32($c1)
 ; CHECK-NEXT:    clc $c2, $zero, 32($c2)
+; CHECK-NEXT:    clc $c1, $zero, 32($c1)
 ; CHECK-NEXT:    cne $2, $c1, $c2
 ; CHECK-NEXT:  .LBB0_22: # %_ZNK3JSC7JSValue9toBooleanEU3capPNS_9ExecStateE.exit
 ; CHECK-NEXT:    clc $c1, $zero, 48($c18)
